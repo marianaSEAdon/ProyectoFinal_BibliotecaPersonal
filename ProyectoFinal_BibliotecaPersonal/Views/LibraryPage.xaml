@@ -2,11 +2,65 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProyectoFinal_BibliotecaPersonal.Views.LibraryPage"
+             xmlns:conv="clr-namespace:ProyectoFinal_BibliotecaPersonal.Converters"
              Title="LibraryPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:BoolToReadConverter x:Key="BoolToReadConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <CollectionView ItemsSource="{Binding Books}">
+        
+
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Frame Padding="10" Margin="5">
+                    <Grid ColumnDefinitions="80,*,Auto" ColumnSpacing="10">
+
+                        <!-- Cover -->
+                        <Image Grid.Column="0"
+                               Source="{Binding CoverUrl}"
+                               Aspect="AspectFill"
+                               HeightRequest="100"/>
+
+                        <!-- Info -->
+                        <StackLayout Grid.Column="1" Spacing="5">
+                            <Label Text="{Binding Title}" FontAttributes="Bold"/>
+                            <Label Text="{Binding Author}"/>
+                            <Label Text="{Binding Genre}" FontSize="12"/>
+
+                            <Label Text="{Binding IsRead, Converter={StaticResource BoolToReadConverter}}"/>
+
+                        </StackLayout>
+
+                        <!-- Actions -->
+                        <StackLayout Grid.Column="2" Spacing="5">
+
+                            <Button Text="Ver"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ViewDetailsCommand}"
+                                CommandParameter="{Binding .}"/>
+
+                            <Button Text="✓"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.MarkAsReadCommand}"
+                                CommandParameter="{Binding .}"/>
+
+                        </StackLayout>
+
+                    </Grid>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+
+        <!-- Empty -->
+        <CollectionView.EmptyView>
+            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                <Label Text="📚" FontSize="48" HorizontalOptions="Center"/>
+                <Label Text="Tu biblioteca está vacía"/>
+                <Button Text="Agregar primer libro"
+                        Command="{Binding AddBookCommand}"/>
+            </StackLayout>
+        </CollectionView.EmptyView>
+
+    </CollectionView>
+
 </ContentPage>

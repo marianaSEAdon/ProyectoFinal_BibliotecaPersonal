@@ -48,13 +48,20 @@ namespace ProyectoFinal_BibliotecaPersonal.Services
             await database.UpdateAsync(book);
         }
 
-        public async Task GetStatisticsAsync()
+        public async Task<(int total, int read, int unread, int pages)> GetStatisticsAsync()
         {
-                int totalBooks = await database.Table<Book>().CountAsync();
-                int readBooks = await database.Table<Book>().Where(b => b.IsRead).CountAsync();
-                int unreadBooks = totalBooks - readBooks;
-            // Retorna estadísticas
+            int totalBooks = await database.Table<Book>().CountAsync();
+            int readBooks = await database.Table<Book>().Where(b => b.IsRead).CountAsync();
+            int unreadBooks = totalBooks - readBooks;
 
+            // 👇 traer libros leídos
+            var readBooksList = await database.Table<Book>()
+                                              .Where(b => b.IsRead)
+                                              .ToListAsync();
+
+            int totalPages = readBooksList.Sum(b => b.Pages);
+
+            return (totalBooks, readBooks, unreadBooks, totalPages);
         }
     }
 }

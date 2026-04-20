@@ -3,10 +3,57 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProyectoFinal_BibliotecaPersonal.Views.AddBookPage"
              Title="AddBookPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="15" Spacing="10">
+
+            <Entry Placeholder="Título" Text="{Binding Book.Title}" />
+            <Entry Placeholder="Autor" Text="{Binding Book.Author}" />
+            <Entry Placeholder="ISBN" Text="{Binding Book.ISBN}" />
+
+            <Entry Placeholder="Año"
+               Keyboard="Numeric"
+               Text="{Binding Book.Year}" />
+
+            <Picker Title="Género"
+                SelectedItem="{Binding Book.Genre}">
+                <Picker.Items>
+                    <x:String>Ficción</x:String>
+                    <x:String>No ficción</x:String>
+                    <x:String>Ciencia</x:String>
+                    <x:String>Historia</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <Entry Placeholder="Páginas"
+               Keyboard="Numeric"
+               Text="{Binding Book.Pages}" />
+
+            <HorizontalStackLayout>
+                <Label Text="Leído"/>
+                <CheckBox IsChecked="{Binding Book.IsRead}" />
+            </HorizontalStackLayout>
+
+            <Label Text="Calificación"/>
+            <Slider Minimum="1" Maximum="5"
+                Value="{Binding Book.Rating}" />
+
+            <Editor Placeholder="Notas"
+                HeightRequest="100"
+                Text="{Binding Book.Notes}" />
+
+            <!-- BOTONES -->
+            <HorizontalStackLayout Spacing="10">
+
+                <Button Text="Guardar"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    Command="{Binding SaveCommand}" />
+
+                <Button Text="Cancelar"
+                    Command="{Binding CancelCommand}" />
+
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

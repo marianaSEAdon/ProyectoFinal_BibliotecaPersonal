@@ -27,7 +27,10 @@ namespace ProyectoFinal_BibliotecaPersonal.ViewModels
         {
             database = new DatabaseService();
             Books = new ObservableCollection<Book>();
-            
+
+            AddBookCommand = new RelayCommand(async () => await AddBook());
+            ViewDetailsCommand = new RelayCommand<Book>(async (book) => await ViewDetails(book));
+
             // ... más commands
             _ = LoadBooksAsync();
         }
@@ -40,6 +43,18 @@ namespace ProyectoFinal_BibliotecaPersonal.ViewModels
             {
                 Books.Add(book);
             }
+        }
+
+        private async Task AddBook()
+        {
+            await Shell.Current.GoToAsync("add");
+        }
+
+        private async Task ViewDetails(Book book)
+        {
+            if (book == null) return;
+
+            await Shell.Current.GoToAsync($"edit?bookId={book.Id}");
         }
     }
 }

@@ -3,10 +3,76 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProyectoFinal_BibliotecaPersonal.Views.BookDetailPage"
              Title="BookDetailPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="15" Spacing="10">
+
+            <!-- Título -->
+            <Entry Placeholder="Título"
+                   Text="{Binding Book.Title}" />
+
+            <!-- Autor -->
+            <Entry Placeholder="Autor"
+                   Text="{Binding Book.Author}" />
+
+            <!-- ISBN -->
+            <Entry Placeholder="ISBN"
+                   Text="{Binding Book.ISBN}" />
+
+            <!-- Año -->
+            <Entry Placeholder="Año"
+                   Keyboard="Numeric"
+                   Text="{Binding Book.Year}" />
+
+            <!-- Género -->
+            <Picker Title="Género"
+                    SelectedItem="{Binding Book.Genre}">
+                <Picker.Items>
+                    <x:String>Ficción</x:String>
+                    <x:String>No ficción</x:String>
+                    <x:String>Ciencia</x:String>
+                    <x:String>Historia</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <!-- Páginas -->
+            <Entry Placeholder="Páginas"
+                   Keyboard="Numeric"
+                   Text="{Binding Book.Pages}" />
+
+            <!-- Leído -->
+            <HorizontalStackLayout>
+                <Label Text="Leído"/>
+                <CheckBox IsChecked="{Binding Book.IsRead}" />
+            </HorizontalStackLayout>
+
+            <!-- Rating -->
+            <Label Text="Calificación"/>
+            <Slider Minimum="1" Maximum="5"
+                    Value="{Binding RatingValue}" />
+
+            <!-- Notas -->
+            <Editor Placeholder="Notas"
+                    HeightRequest="100"
+                    Text="{Binding Book.Notes}" />
+
+            <!-- Botones -->
+            <HorizontalStackLayout Spacing="10">
+
+                <Button Text="Guardar"
+                        BackgroundColor="Green"
+                        TextColor="White"
+                        Command="{Binding SaveCommand}" />
+
+                <Button Text="Eliminar"
+                        BackgroundColor="Red"
+                        TextColor="White"
+                        Command="{Binding DeleteCommand}" />
+
+                <Button Text="Cancelar"
+                        Command="{Binding CancelCommand}" />
+
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
