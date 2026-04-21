@@ -15,33 +15,43 @@ namespace ProyectoFinal_BibliotecaPersonal.Services
         }
         public async Task<List<BookSearchResult>> SearchBooksAsync(string query)
         {
-            var url = $"{API_URL}?q={Uri.EscapeDataString(query)}";
+            try
+            {
+                var url = $"{API_URL}?q={Uri.EscapeDataString(query)}";
 
-            var response = await httpClient.GetAsync(url);
+                var response = await httpClient.GetAsync(url);
 
-            if (!response.IsSuccessStatusCode)
+               
+                if (!response.IsSuccessStatusCode)
+                    return new List<BookSearchResult>();
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                var result = JsonSerializer.Deserialize<GoogleBooksResponse>(json, options);
+
+                if (result?.Items == null)
+                    return new List<BookSearchResult>();
+
+                return result.Items.Select(item => new BookSearchResult
+                {
+                    Id = item.Id,
+                    Title = item.VolumeInfo?.Title,
+                    Author = item.VolumeInfo?.Authors != null
+                        ? string.Join(", ", item.VolumeInfo.Authors)
+                        : "Autor desconocido",
+                    ThumbnailUrl = item.VolumeInfo?.ImageLinks?.Thumbnail
+                }).ToList();
+            }
+            catch
+            {
+                // ❌ Sin excepciones hacia UI
                 return new List<BookSearchResult>();
-
-            var json = await response.Content.ReadAsStringAsync();
-
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-
-            var result = JsonSerializer.Deserialize<GoogleBooksResponse>(json, options);
-
-            var books = result?.Items?.Select(item => new BookSearchResult
-            {
-                Id = item.Id,
-                Title = item.VolumeInfo?.Title,
-                Author = item.VolumeInfo?.Authors != null
-                    ? string.Join(", ", item.VolumeInfo.Authors)
-                    : "Autor desconocido",
-                ThumbnailUrl = item.VolumeInfo?.ImageLinks?.Thumbnail
-            }).ToList();
-
-            return books ?? new List<BookSearchResult>();
+            }
         }
 
         public async Task<BookDetail> GetBookDetailAsync(string bookId)

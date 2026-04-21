@@ -19,7 +19,6 @@ namespace ProyectoFinal_BibliotecaPersonal.ViewModels
         {
             database = new DatabaseService();
 
-            // 🔥 libro nuevo
             Book = new Book
             {
                 DateAdded = DateTime.Now,
@@ -32,7 +31,7 @@ namespace ProyectoFinal_BibliotecaPersonal.ViewModels
 
         private async Task Save()
         {
-            // Validación básica
+
             if (string.IsNullOrWhiteSpace(Book.Title))
             {
                 await Shell.Current.DisplayAlert("Error", "El título es obligatorio", "OK");
@@ -41,7 +40,7 @@ namespace ProyectoFinal_BibliotecaPersonal.ViewModels
 
             await database.SaveBookAsync(Book);
 
-            await Shell.Current.GoToAsync(".."); // volver
+            await Shell.Current.GoToAsync(".."); 
         }
 
         private async Task Cancel()

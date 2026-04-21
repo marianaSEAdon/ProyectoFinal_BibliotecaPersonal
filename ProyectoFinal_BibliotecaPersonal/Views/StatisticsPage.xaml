@@ -5,16 +5,9 @@
              Title="StatisticsPage">
     <VerticalStackLayout Padding="10">
 
-        <!-- Canvas -->
         <GraphicsView x:Name="graphicsView"
               HeightRequest="500"
               Drawable="{Binding Drawable}" />
-
-       
-        <Label Text="{Binding TotalBooks, StringFormat='Total libros: {0}'}" />
-        <Label Text="{Binding ReadBooks, StringFormat='Leídos: {0}'}" />
-        <Label Text="{Binding UnreadBooks, StringFormat='Pendientes: {0}'}" />
-        <Label Text="{Binding TotalPagesRead, StringFormat='Páginas leídas: {0}'}" />
 
     </VerticalStackLayout>
 </ContentPage>

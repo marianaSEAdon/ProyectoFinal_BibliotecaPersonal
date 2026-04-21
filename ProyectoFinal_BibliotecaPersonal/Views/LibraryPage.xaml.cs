@@ -10,5 +10,14 @@ public partial class LibraryPage : ContentPage
 		InitializeComponent();
         BindingContext = new LibraryViewModel();
     }
-    
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is LibraryViewModel vm)
+        {
+            await vm.LoadBooksAsync();
+        }
+    }
+
 }

@@ -1,8 +1,5 @@
-﻿
-
-using ProyectoFinal_BibliotecaPersonal.Models;
+﻿using ProyectoFinal_BibliotecaPersonal.Models;
 using SQLite;
-using System.Security.Cryptography.X509Certificates;
 
 namespace ProyectoFinal_BibliotecaPersonal.Services
 {
@@ -22,6 +19,10 @@ namespace ProyectoFinal_BibliotecaPersonal.Services
                 return await database.UpdateAsync(book);
             else
                 return await database.InsertAsync(book);
+        }
+        public async Task<int> UpdateBookAsync(Book book)
+        {
+                return await database.UpdateAsync(book);
         }
         public async Task<List<Book>> GetBooksAsync()
         {
@@ -54,7 +55,7 @@ namespace ProyectoFinal_BibliotecaPersonal.Services
             int readBooks = await database.Table<Book>().Where(b => b.IsRead).CountAsync();
             int unreadBooks = totalBooks - readBooks;
 
-            // 👇 traer libros leídos
+           
             var readBooksList = await database.Table<Book>()
                                               .Where(b => b.IsRead)
                                               .ToListAsync();

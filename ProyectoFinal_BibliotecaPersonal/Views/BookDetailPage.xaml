@@ -31,6 +31,8 @@
                     <x:String>No ficción</x:String>
                     <x:String>Ciencia</x:String>
                     <x:String>Historia</x:String>
+                    <x:String>Poema</x:String>
+                    <x:String>Otro</x:String>
                 </Picker.Items>
             </Picker>
 

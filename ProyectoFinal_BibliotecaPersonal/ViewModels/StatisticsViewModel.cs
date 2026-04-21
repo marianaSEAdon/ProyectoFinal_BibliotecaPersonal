@@ -23,7 +23,6 @@ namespace ProyectoFinal_BibliotecaPersonal.ViewModels
             database = new DatabaseService();
             GenreStats = new ObservableCollection<GenreStat>();
 
-
             _ = LoadStats();
         }
 
@@ -31,37 +30,35 @@ namespace ProyectoFinal_BibliotecaPersonal.ViewModels
         {
             var stats = await database.GetStatisticsAsync();
 
-            // 1. Asignar valores
             TotalBooks = stats.total;
             ReadBooks = stats.read;
             UnreadBooks = stats.unread;
             TotalPagesRead = stats.pages;
 
-            // 2. Obtener libros
             var books = await database.GetBooksAsync();
 
-            var grouped = books.GroupBy(b => b.Genre)
-                               .Select(g => new GenreStat
-                               {
-                                   Genre = g.Key,
-                                   Count = g.Count()
-                               });
+            var grouped = books
+                .GroupBy(b => string.IsNullOrWhiteSpace(b.Genre) ? "Sin género" : b.Genre)
+                .Select(g => new GenreStat
+                {
+                    Genre = g.Key,
+                    Count = g.Count()
+                });
 
             GenreStats.Clear();
             foreach (var g in grouped)
                 GenreStats.Add(g);
 
-            // 3. AHORA sí crear el drawable
             Drawable = new StatisticsDrawable
             {
                 TotalBooks = TotalBooks,
                 ReadBooks = ReadBooks,
                 UnreadBooks = UnreadBooks,
                 TotalPagesRead = TotalPagesRead,
-                BooksByGenre = GenreStats.ToDictionary(g => g.Genre, g => g.Count)
+                BooksByGenre = GenreStats.Where(g => !string.IsNullOrWhiteSpace(g.Genre))
+                .ToDictionary(g => g.Genre, g => g.Count)
             };
 
-            // 4. Notificar UI
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Drawable)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalBooks)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReadBooks)));

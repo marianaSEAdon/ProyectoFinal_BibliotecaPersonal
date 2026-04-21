@@ -1,5 +1,4 @@
-﻿
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using ProyectoFinal_BibliotecaPersonal.Models;
 using ProyectoFinal_BibliotecaPersonal.Services;
 using System.Collections.ObjectModel;
@@ -32,17 +31,30 @@ namespace ProyectoFinal_BibliotecaPersonal.ViewModels
             ViewDetailsCommand = new RelayCommand<Book>(async (book) => await ViewDetails(book));
 
             // ... más commands
+            MarkAsReadCommand = new RelayCommand<Book>(async (book) => await MarkAsRead(book));
             _ = LoadBooksAsync();
         }
+        private async Task MarkAsRead(Book book)
+        {
+            if (book == null) return;
 
-        private async Task LoadBooksAsync()
+            await database.UpdateReadStatusAsync(book);
+
+            await LoadBooksAsync();
+        }
+        public async Task LoadBooksAsync()
         {
             var books = await database.GetBooksAsync();
+
             Books.Clear();
+
             foreach (var book in books)
             {
                 Books.Add(book);
             }
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalBooks)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReadBooks)));
         }
 
         private async Task AddBook()

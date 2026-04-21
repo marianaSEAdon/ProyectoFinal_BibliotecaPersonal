@@ -34,18 +34,29 @@ namespace ProyectoFinal_BibliotecaPersonal.ViewModels
 
         private async Task Search()
         {
-            await Shell.Current.DisplayAlert("Debug", $"Buscando: {Query}", "OK");
-
             Results.Clear();
 
             if (string.IsNullOrWhiteSpace(Query))
                 return;
 
-            var books = await apiService.SearchBooksAsync(Query);
-
-            foreach (var book in books)
+            try
             {
-                Results.Add(book);
+                var books = await apiService.SearchBooksAsync(Query);
+
+                if (books.Count == 0)
+                {
+                    await Shell.Current.DisplayAlert("Aviso", "No se encontraron libros.", "OK");
+                    return;
+                }
+
+                foreach (var book in books)
+                {
+                    Results.Add(book);
+                }
+            }
+            catch
+            {
+                await Shell.Current.DisplayAlert("Error", "No se pudo conectar con el servidor.", "OK");
             }
         }
 
