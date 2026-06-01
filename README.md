@@ -1,9 +1,7 @@
 # 📚 ProyectoFinal_BibliotecaPersonal
 
 ## 📖 Descripción del proyecto
-Este proyecto consiste en una aplicación desarrollada en .NET MAUI que permite a los usuarios gestionar su biblioteca personal de libros.  
-La aplicación facilita el registro, la visualización y la organización de libros, proporcionando una experiencia sencilla e intuitiva.  
-Además, la app permite gestionar la colección de libros, buscar nuevos libros mediante una API externa y visualizar estadísticas de lectura.
+Este proyecto consiste en una aplicación desarrollada en .NET MAUI que permite a los usuarios gestionar su biblioteca personal de libros. La aplicación facilita el registro, la visualización y la organización de libros, proporcionando una experiencia sencilla e intuitiva. Además, la app permite gestionar la colección de libros, buscar nuevos libros mediante una API externa y visualizar estadísticas de lectura.
 
 ---
 
